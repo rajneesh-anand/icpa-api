@@ -108,7 +108,7 @@ model Coursemedia {
   courseId  Int? 
 }
 
-model Orders {
+model ProductOrders {
   id        Int     @default(autoincrement()) @id
   orderNumber     String?  @unique
   name        String
@@ -130,18 +130,35 @@ model Orders {
 }
 
 
-model Courseorders {
-  id        Int     @default(autoincrement()) @id
+model Orders {
+  id        Int @default(autoincrement()) @id
   orderNumber     String?  @unique
   name        String
   email       String  
+  orderType   String  
   amount Decimal  
   paymentID String?
   paymentStatus String ?
-  createdAt     DateTime  @default(now()) 
-  customer    User?   @relation(fields: [cusId], references: [id])
-  cusId  Int?
+  createdAt     DateTime  @default(now())  
 }
+
+model Telconsultations {
+  id        Int @default(autoincrement()) @id
+  name      String @unique
+  email   String
+  phone   String
+  sellerType   String
+  companyType   String
+  monthlySale   String
+  interestedIn   String
+  talkTimePackage   String
+  scheduledCallDate   String
+  comment   String?
+  paymentStatus   String?
+  createdAt     DateTime  @default(now())  
+}
+
+
 
 model Testinomials{
   id        Int  @default(autoincrement()) @id
@@ -160,8 +177,8 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
-  orders        Orders[]
-  courseorders  Courseorders[] 
+  products      ProductOrders[]
+ 
   @@map(name: "users")
 }
 

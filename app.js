@@ -10,6 +10,7 @@ const service = require("./routes/service");
 const course = require("./routes/course");
 const chapter = require("./routes/chapter");
 const testinomial = require("./routes/testinomial");
+const blog = require("./routes/blog");
 require("dotenv").config();
 
 const app = express();
@@ -41,6 +42,7 @@ app.use("/api/service", service);
 app.use("/api/course", course);
 app.use("/api/chapter", chapter);
 app.use("/api/testinomial", testinomial);
+app.use("/api/blog", blog);
 
 const port = process.env.PORT || 8080;
 
