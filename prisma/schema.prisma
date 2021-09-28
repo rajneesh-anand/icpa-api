@@ -82,9 +82,10 @@ model Courses {
   discount Decimal?
   gst Decimal?
   ratings Decimal?
-  numberOfEnrollments Int?
   numberOfRatings Int?
+  numberOfEnrollments Int? 
   duration String ?
+  numberOfModules Int?  
   numberOfLectures Int?  
   reviews  String?
   validity  String?
@@ -92,6 +93,7 @@ model Courses {
   categoryId  Int?
   category    Categories?   @relation(fields: [categoryId], references: [id]) 
   coursemedia Coursemedia[]
+  orders Orders[]
   createdAt     DateTime  @default(now()) 
 }
 
@@ -136,10 +138,12 @@ model Orders {
   name        String
   email       String  
   orderType   String  
-  amount Decimal  
+  amount Decimal? 
   paymentID String?
-  paymentStatus String ?
+  paymentStatus String?
   createdAt     DateTime  @default(now())  
+  courseId  Int?
+  course    Courses?   @relation(fields: [courseId], references: [id]) 
 }
 
 model Telconsultations {

@@ -5,11 +5,16 @@ const prisma = require("../lib/prisma");
 const router = express.Router();
 
 var AWS = require("aws-sdk");
-const s3 = new AWS.S3({
-  accessKeyId: process.env.IAM_USER_KEY,
-  secretAccessKey: process.env.IAM_USER_SECRET,
-  Bucket: process.env.BUCKET_NAME,
+
+const bucketName = process.env.S3_BUCKET;
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_ACCESS_SECRET,
+  region: process.env.AWS_REGISN,
 });
+
+const s3 = new AWS.S3();
 
 var awsImagePath = [];
 
@@ -18,7 +23,7 @@ const readFile = async (file) => {
     console.error("Failed to read file", err);
   });
   const params = {
-    Bucket: process.env.BUCKET_NAME,
+    Bucket: bucketName + "/lectures",
     Key: file.name,
     ContentType: file.type,
     Body: photo,

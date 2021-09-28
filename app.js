@@ -11,6 +11,7 @@ const course = require("./routes/course");
 const chapter = require("./routes/chapter");
 const testinomial = require("./routes/testinomial");
 const blog = require("./routes/blog");
+const payment = require("./routes/payment");
 require("dotenv").config();
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/course", course);
 app.use("/api/chapter", chapter);
 app.use("/api/testinomial", testinomial);
 app.use("/api/blog", blog);
+app.use("/api/payment", payment);
 
 const port = process.env.PORT || 8080;
 
