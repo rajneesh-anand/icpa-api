@@ -24,22 +24,22 @@ model Post {
   authorId  Int? 
 }
 
-model Product {
+model Products {
   id       Int     @default(autoincrement()) @id
   name     String?
   slug String?
-  images    String[]
+  images    String?
   description String?
-  category    String?
-  subCategories   String[]
+  category    String?  
   size  String?
   weight  Decimal?  
-  price    Decimal 
-  sellingPrice Decimal
+  price    Decimal? 
+  sellingPrice Decimal?
   discount Decimal?
   gst Decimal?
   minimumQuantity Int?
-  usage String?
+  details String?
+  ratings Decimal?
   inStock Boolean @default(true) 
   createdAt     DateTime  @default(now()) 
 }
@@ -148,7 +148,7 @@ model Orders {
 
 model Telconsultations {
   id        Int @default(autoincrement()) @id
-  name      String @unique
+  name      String
   email   String
   phone   String
   sellerType   String
@@ -176,6 +176,8 @@ model User {
   id            Int       @default(autoincrement()) @id
   name          String?
   email         String?   @unique
+  address       String?
+  contact       Int?
   emailVerified DateTime? @map(name: "email_verified")
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")

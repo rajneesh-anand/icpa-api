@@ -1,97 +1,119 @@
 const express = require("express");
 const { IncomingForm } = require("formidable");
 const fs = require("fs");
-const path = require("path");
 const prisma = require("../lib/prisma");
-const DatauriParser = require("datauri/parser");
-const cloudinary = require("cloudinary").v2;
-
 const router = express.Router();
-const parser = new DatauriParser();
+var AWS = require("aws-sdk");
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+const bucketName = process.env.S3_BUCKET;
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_ACCESS_SECRET,
+  region: process.env.AWS_REGISN,
 });
 
-const cloudinaryUpload = (file) => cloudinary.uploader.upload(file);
+const s3 = new AWS.S3();
+
+const readFile = async (file) => {
+  const photo = await fs.promises.readFile(file.path).catch((err) => {
+    console.error("Failed to read file", err);
+  });
+  const params = {
+    Bucket: bucketName + "/users",
+    Key: file.name,
+    ContentType: file.type,
+    Body: photo,
+    ACL: "public-read",
+  };
+
+  try {
+    let uploadRes = s3.upload(params).promise();
+    let resData = await uploadRes;
+    return resData.Location;
+  } catch (error) {
+    return error;
+  }
+};
+
+const uploadPhototToawsS3 = async (data) => {
+  const images = data.files.images;
+  if (Array.isArray(images)) {
+    const promises = images.map((item) => readFile(item));
+    await Promise.all(promises);
+    return { message: "success" };
+  } else {
+    readFile(images);
+    return { message: "success" };
+  }
+};
 
 router.post("/", async (req, res, next) => {
   const data = await new Promise((resolve, reject) => {
     const form = new IncomingForm();
+    form.multiples = true;
     form.parse(req, (err, fields, files) => {
       if (err) return reject(err);
       resolve({ fields, files });
     });
   });
 
-  const photo = await fs.promises
-    .readFile(data.files.image.path)
-    .catch((err) => console.error("Failed to read file", err));
+  if (Object.keys(data.files).length !== 0) {
+    const imageLocation = await readFile(data.files.image);
 
-  let photo64 = parser.format(
-    path.extname(data.files.image.name).toString(),
-    photo
-  );
-
-  try {
-    const uploadResult = await cloudinaryUpload(photo64.content);
-    const result = await prisma.product.create({
-      data: {
-        name: data.fields.product_name,
-        slug: data.fields.slug,
-        price: Number(data.fields.mrp_price),
-        sellingPrice: Number(data.fields.selling_price),
-        discount: Number(data.fields.discount),
-        gst: Number(data.fields.gst),
-        description: data.fields.description,
-        image: uploadResult.secure_url,
-        category: data.fields.category,
-        subCategories: JSON.parse(data.fields.sub_category),
-        size: data.fields.size,
-        weight: Number(data.fields.weight),
-        minimumQuantity: Number(data.fields.minimum_quantity),
-        usage: data.fields.usage,
-        inStock: JSON.parse(data.fields.stock),
-      },
-    });
-
-    return res.status(200).json({
-      msg: "success",
-      data: result,
-    });
-  } catch (error) {
-    console.log(error);
-    return next(error);
-  } finally {
-    async () => {
-      await prisma.$disconnect();
-    };
+    try {
+      await prisma.products.create({
+        data: {
+          name: data.fields.name,
+          description: data.fields.description,
+          image: imageLocation,
+          slug: data.fields.description,
+          price: data.fields.price,
+          sellingPrice: data.fields.sale_price,
+          details: data.fields.sale_price,
+          ratings: data.fields.ratings,
+        },
+      });
+      res.status(200).json({
+        msg: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
+  } else {
+    try {
+      await prisma.products.create({
+        data: {
+          name: data.fields.name,
+          description: data.fields.description,
+          slug: data.fields.description,
+          price: data.fields.price,
+          sellingPrice: data.fields.sale_price,
+          details: data.fields.sale_price,
+          ratings: data.fields.ratings,
+        },
+      });
+      res.status(200).json({
+        msg: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
   }
 });
 
-router.get("/", async (req, res) => {
-  try {
-    const products = await prisma.product.findMany();
-    console.log(products);
-    return res.status(200).json({
-      msg: "success",
-      result: products,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  } finally {
-    async () => {
-      await prisma.$disconnect();
-    };
-  }
-});
-
-router.post("/:id", async (req, res) => {
-  const productId = req.params.id;
-
+router.post("/:id", async (req, res, next) => {
+  const id = req.params.id;
   const data = await new Promise((resolve, reject) => {
     const form = new IncomingForm();
     form.parse(req, (err, fields, files) => {
@@ -100,73 +122,59 @@ router.post("/:id", async (req, res) => {
     });
   });
 
-  try {
-    if (Object.keys(data.files).length !== 0) {
-      const photo = await fs.promises
-        .readFile(data.files.image.path)
-        .catch((err) => console.error("Failed to read file", err));
+  if (Object.keys(data.files).length !== 0) {
+    const imageLocation = await readFile(data.files.image);
 
-      const photo64 = parser.format(
-        path.extname(data.files.image.name).toString(),
-        photo
-      );
-      const uploadResult = await cloudinaryUpload(photo64.content);
-      let result = await prisma.product.update({
-        where: { id: Number(productId) },
+    try {
+      await prisma.products.update({
+        where: { id: Number(id) },
         data: {
-          name: data.fields.product_name,
-          slug: data.fields.slug,
-          price: Number(data.fields.mrp_price),
-          sellingPrice: Number(data.fields.selling_price),
-          discount: Number(data.fields.discount),
-          gst: Number(data.fields.gst),
+          name: data.fields.name,
           description: data.fields.description,
-          image: uploadResult.secure_url,
-          category: data.fields.category,
-          subCategories: JSON.parse(data.fields.sub_category),
-          size: data.fields.size,
-          weight: Number(data.fields.weight),
-          minimumQuantity: Number(data.fields.minimum_quantity),
-          usage: data.fields.usage,
-          inStock: JSON.parse(data.fields.stock),
+          image: imageLocation,
+          slug: data.fields.description,
+          price: data.fields.price,
+          sellingPrice: data.fields.sale_price,
+          details: data.fields.sale_price,
+          ratings: data.fields.ratings,
         },
       });
-      return res.status(200).json({
+      res.status(200).json({
         msg: "success",
-        data: result,
       });
-    } else {
-      let result = await prisma.product.update({
-        where: { id: Number(productId) },
-        data: {
-          name: data.fields.product_name,
-          slug: data.fields.slug,
-          price: Number(data.fields.mrp_price),
-          sellingPrice: Number(data.fields.selling_price),
-          discount: Number(data.fields.discount),
-          gst: Number(data.fields.gst),
-          description: data.fields.description,
-          category: data.fields.category,
-          subCategories: JSON.parse(data.fields.sub_category),
-          size: data.fields.size,
-          weight: Number(data.fields.weight),
-          minimumQuantity: Number(data.fields.minimum_quantity),
-          usage: data.fields.usage,
-          inStock: JSON.parse(data.fields.stock),
-        },
-      });
-      return res.status(200).json({
-        msg: "success",
-        data: result,
-      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  } finally {
-    async () => {
-      await prisma.$disconnect();
-    };
+  } else {
+    try {
+      await prisma.products.update({
+        where: { id: Number(id) },
+        data: {
+          name: data.fields.name,
+          description: data.fields.description,
+          slug: data.fields.description,
+          price: data.fields.price,
+          sellingPrice: data.fields.sale_price,
+          details: data.fields.sale_price,
+          ratings: data.fields.ratings,
+        },
+      });
+      res.status(200).json({
+        msg: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
   }
 });
 
