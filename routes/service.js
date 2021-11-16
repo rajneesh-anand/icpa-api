@@ -72,6 +72,7 @@ router.post("/", async (req, res, next) => {
           discount: Number(data.fields.discount),
           gst: Number(data.fields.gst),
           usage: data.fields.usage,
+          popularity: data.fields.popularity,
           status: JSON.parse(data.fields.status),
           category: { connect: { name: data.fields.category } },
         },
@@ -99,6 +100,7 @@ router.post("/", async (req, res, next) => {
           discount: Number(data.fields.discount),
           gst: Number(data.fields.gst),
           usage: data.fields.usage,
+          popularity: data.fields.popularity,
           status: JSON.parse(data.fields.status),
           category: { connect: { name: data.fields.category } },
         },
@@ -144,6 +146,7 @@ router.post("/:id", async (req, res, next) => {
           gst: Number(data.fields.gst),
           usage: data.fields.usage,
           status: JSON.parse(data.fields.status),
+          popularity: data.fields.popularity,
           category: { connect: { name: data.fields.category } },
         },
       });
@@ -173,6 +176,7 @@ router.post("/:id", async (req, res, next) => {
           gst: Number(data.fields.gst),
           usage: data.fields.usage,
           status: JSON.parse(data.fields.status),
+          popularity: data.fields.popularity,
           category: { connect: { name: data.fields.category } },
         },
       });

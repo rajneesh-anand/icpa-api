@@ -30,7 +30,7 @@ model Products {
   slug String?
   images    String?
   description String?
-  category    String?  
+  category    String[]  
   size  String?
   weight  Decimal?  
   price    Decimal? 
@@ -40,6 +40,7 @@ model Products {
   minimumQuantity Int?
   details String?
   ratings Decimal?
+  popularity String?
   inStock Boolean @default(true) 
   createdAt     DateTime  @default(now()) 
 }
@@ -65,6 +66,7 @@ model Services {
   gst Decimal? 
   usage String?
   status Boolean @default(true) 
+  popularity String?
   createdAt     DateTime  @default(now()) 
   categoryId  Int?
   category    Categories?   @relation(fields: [categoryId], references: [id]) 
@@ -232,3 +234,14 @@ model VerificationRequest {
 
   
 }
+
+
+model Queries {
+  id        Int  @default(autoincrement()) @id
+  name      String?
+  email String? @unique
+  contact Int?
+  location  String ?
+  interested String ?
+}
+

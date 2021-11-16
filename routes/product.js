@@ -72,6 +72,8 @@ router.post("/", async (req, res, next) => {
           sellingPrice: data.fields.sale_price,
           details: data.fields.sale_price,
           ratings: data.fields.ratings,
+          popularity: data.fields.popularity,
+          category: JSON.parse(data.fields.category),
         },
       });
       res.status(200).json({
@@ -96,6 +98,8 @@ router.post("/", async (req, res, next) => {
           sellingPrice: data.fields.sale_price,
           details: data.fields.sale_price,
           ratings: data.fields.ratings,
+          popularity: data.fields.popularity,
+          category: JSON.parse(data.fields.category),
         },
       });
       res.status(200).json({
@@ -137,6 +141,8 @@ router.post("/:id", async (req, res, next) => {
           sellingPrice: data.fields.sale_price,
           details: data.fields.sale_price,
           ratings: data.fields.ratings,
+          popularity: data.fields.popularity,
+          category: JSON.parse(data.fields.category),
         },
       });
       res.status(200).json({
@@ -162,6 +168,8 @@ router.post("/:id", async (req, res, next) => {
           sellingPrice: data.fields.sale_price,
           details: data.fields.sale_price,
           ratings: data.fields.ratings,
+          popularity: data.fields.popularity,
+          category: JSON.parse(data.fields.category),
         },
       });
       res.status(200).json({
