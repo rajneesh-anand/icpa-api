@@ -18,7 +18,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-var allowedDomains = ["https://kokeliko.vercel.app", "http://localhost:3000"];
+var allowedDomains = ["https://icpa-mu.vercel.app", "http://localhost:3000"];
 app.use(
   cors({
     origin: function (origin, callback) {
