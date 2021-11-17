@@ -40,7 +40,6 @@ const readFile = async (file) => {
 
 // function to fetch list of objects from aws bucket
 async function fetchObjects(bucketName) {
-  console.log(`object`);
   let objects = [];
   const params = {
     Bucket: bucketName,
@@ -134,6 +133,10 @@ router.post("/deleteObject", async (req, res) => {
       console.log(err);
       return next(err);
     });
+});
+
+router.get("/testing", (req, res) => {
+  res.status(200).json({ msg: "success" });
 });
 
 module.exports = router;
