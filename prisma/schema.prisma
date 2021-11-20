@@ -240,7 +240,7 @@ model Queries {
   id        Int  @default(autoincrement()) @id
   name      String?
   email String? @unique
-  contact Int?
+  contact String?
   location  String ?
   interested String ?
 }
