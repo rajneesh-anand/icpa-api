@@ -60,13 +60,14 @@ router.post("/", async (req, res, next) => {
       resolve({ fields, files });
     });
   });
-  console.log(data);
+
   const imageLocation = await readFile(data.files.image);
   const videoLocation = await readFile(data.files.video);
   try {
     await prisma.coursemedia.create({
       data: {
         title: data.fields.name,
+        module: data.fields.module,
         slug: data.fields.slug,
         description: data.fields.description,
         video: videoLocation,
@@ -88,7 +89,7 @@ router.post("/", async (req, res, next) => {
 });
 
 router.post("/:id", async (req, res, next) => {
-  const serviceId = req.params.id;
+  const chapterId = req.params.id;
   const data = await new Promise((resolve, reject) => {
     const form = new IncomingForm();
     form.parse(req, (err, fields, files) => {
@@ -98,58 +99,44 @@ router.post("/:id", async (req, res, next) => {
   });
 
   if (Object.keys(data.files).length !== 0) {
-    uploadPhototToawsS3(data)
-      .then(async (pres) => {
-        if (pres.message === "success") {
-          try {
-            await prisma.services.update({
-              where: { id: Number(serviceId) },
-              data: {
-                serviceName: data.fields.service_name,
-                slug: data.fields.slug,
-                images: awsImagePath,
-                description: data.fields.description,
-                category: { connect: { name: data.fields.category } },
-                subCategories: JSON.parse(data.fields.sub_category),
-                serviceFee: Number(data.fields.service_fee),
-                saleFee: Number(data.fields.sale_fee),
-                discount: Number(data.fields.discount),
-                gst: Number(data.fields.gst),
-                usage: data.fields.usage,
-                status: JSON.parse(data.fields.status),
-              },
-            });
+    const imageLocation = await readFile(data.files.image);
+    const videoLocation = await readFile(data.files.video);
 
-            res.status(200).json({
-              msg: "success",
-            });
-          } catch (error) {
-            console.log(error);
-            return next(error);
-          } finally {
-            async () => {
-              await prisma.$disconnect();
-            };
-          }
-        }
-      })
-      .catch((error) => console.log(error));
-  } else {
     try {
-      await prisma.services.update({
-        where: { id: Number(serviceId) },
+      await prisma.coursemedia.update({
+        where: { id: Number(chapterId) },
         data: {
-          serviceName: data.fields.service_name,
+          title: data.fields.name,
+          module: data.fields.module,
           slug: data.fields.slug,
           description: data.fields.description,
-          category: { connect: { name: data.fields.category } },
-          subCategories: JSON.parse(data.fields.sub_category),
-          serviceFee: Number(data.fields.service_fee),
-          saleFee: Number(data.fields.sale_fee),
-          discount: Number(data.fields.discount),
-          gst: Number(data.fields.gst),
-          usage: data.fields.usage,
-          status: JSON.parse(data.fields.status),
+          video: videoLocation,
+          poster: imageLocation,
+          course: { connect: { courseName: data.fields.course_name } },
+        },
+      });
+
+      res.status(200).json({
+        msg: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
+  } else {
+    try {
+      await prisma.coursemedia.update({
+        where: { id: Number(chapterId) },
+        data: {
+          title: data.fields.name,
+          module: data.fields.module,
+          slug: data.fields.slug,
+          description: data.fields.description,
+          course: { connect: { courseName: data.fields.course_name } },
         },
       });
       res.status(200).json({
