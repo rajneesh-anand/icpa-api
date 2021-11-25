@@ -249,3 +249,12 @@ model Queries {
   interested String ?
 }
 
+
+model Faq{
+  id        Int  @default(autoincrement()) @id
+  title      String? @unique
+  description   String?  
+  status Boolean @default(true)
+  
+}
+

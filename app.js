@@ -13,6 +13,7 @@ const testinomial = require("./routes/testinomial");
 const blog = require("./routes/blog");
 const payment = require("./routes/payment");
 const auth = require("./routes/auth");
+const faq = require("./routes/faq");
 require("dotenv").config();
 
 const app = express();
@@ -51,6 +52,7 @@ app.use("/api/chapter", chapter);
 app.use("/api/testinomial", testinomial);
 app.use("/api/blog", blog);
 app.use("/api/payment", payment);
+app.use("/api/faq", faq);
 
 const port = process.env.PORT || 8080;
 
