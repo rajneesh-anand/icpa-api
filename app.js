@@ -12,6 +12,7 @@ const chapter = require("./routes/chapter");
 const testinomial = require("./routes/testinomial");
 const blog = require("./routes/blog");
 const payment = require("./routes/payment");
+const auth = require("./routes/auth");
 require("dotenv").config();
 
 const app = express();
@@ -37,7 +38,7 @@ app.use(
     },
   })
 );
-
+app.use("/api/auth", auth);
 app.use("/api/upload", upload);
 app.use("/api/publish", publish);
 app.use("/api/post", post);
