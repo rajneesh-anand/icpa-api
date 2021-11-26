@@ -35,7 +35,7 @@ router.post("/franchise", async (req, res) => {
   }
 });
 
-router.post("/faq", async (req, res) => {
+router.post("/plan", async (req, res) => {
   const data = await new Promise((resolve, reject) => {
     const form = new IncomingForm();
     form.parse(req, async (err, fields, files) => {
@@ -98,9 +98,9 @@ router.get("/franchise", async (req, res) => {
   res.sendFile(path.join(__dirname, "../upload/franchise.json"));
 });
 
-router.get("/faq", async (req, res) => {
+router.get("/plan", async (req, res) => {
   res.header("Content-Type", "application/json");
-  res.sendFile(path.join(__dirname, "../upload/faq.json"));
+  res.sendFile(path.join(__dirname, "../upload/membership-plan.json"));
 });
 
 router.get("/category", async (req, res) => {
