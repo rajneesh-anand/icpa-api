@@ -65,7 +65,7 @@ router.post("/", async (req, res, next) => {
         data: {
           serviceName: data.fields.service_name,
           slug: data.fields.slug,
-          images: imageLocation,
+          image: imageLocation,
           description: data.fields.description,
           serviceFee: Number(data.fields.service_fee),
           saleFee: Number(data.fields.sale_fee),
@@ -138,7 +138,7 @@ router.post("/:id", async (req, res, next) => {
         data: {
           serviceName: data.fields.service_name,
           slug: data.fields.slug,
-          images: imageLocation,
+          image: imageLocation,
           description: data.fields.description,
           serviceFee: Number(data.fields.service_fee),
           saleFee: Number(data.fields.sale_fee),

@@ -67,7 +67,7 @@ router.post("/", async (req, res, next) => {
         data: {
           courseName: data.fields.couse_name,
           slug: data.fields.slug,
-          images: imageLocation,
+          image: imageLocation,
           description: data.fields.description,
           courseFee: Number(data.fields.course_fee),
           saleFee: Number(data.fields.sale_fee),
@@ -151,7 +151,7 @@ router.post("/:id", async (req, res, next) => {
         data: {
           courseName: data.fields.couse_name,
           slug: data.fields.slug,
-          images: imageLocation,
+          image: imageLocation,
           description: data.fields.description,
           courseFee: Number(data.fields.course_fee),
           saleFee: Number(data.fields.sale_fee),

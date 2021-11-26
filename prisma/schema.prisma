@@ -28,7 +28,7 @@ model Products {
   id       Int     @default(autoincrement()) @id
   name     String?
   slug String?
-  images    String?
+  image    String?
   description String?
   category    String[]  
   size  String?
@@ -58,7 +58,7 @@ model Services {
   id       Int     @default(autoincrement()) @id
   serviceName      String? @unique
   slug String?
-  images    String[]
+  image    String[]
   description String? 
   serviceFee    Decimal 
   saleFee Decimal
@@ -78,7 +78,7 @@ model Courses {
   slug String?
   description String? 
   details String?  
-  images    String? 
+  image    String? 
   courseFee    Decimal 
   saleFee Decimal?
   discount Decimal?
