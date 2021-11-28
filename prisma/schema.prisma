@@ -58,7 +58,7 @@ model Services {
   id       Int     @default(autoincrement()) @id
   serviceName      String? @unique
   slug String?
-  image    String[]
+  image    String?
   description String? 
   serviceFee    Decimal 
   saleFee Decimal

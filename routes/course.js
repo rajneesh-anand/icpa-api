@@ -81,6 +81,7 @@ router.post("/", async (req, res, next) => {
           duration: data.fields.duration,
           details: data.fields.details,
           status: JSON.parse(data.fields.status),
+          validity: data.fields.validity,
           category: { connect: { name: data.fields.category } },
         },
       });
@@ -115,6 +116,7 @@ router.post("/", async (req, res, next) => {
           duration: data.fields.duration,
           details: data.fields.details,
           status: JSON.parse(data.fields.status),
+          validity: data.fields.validity,
           category: { connect: { name: data.fields.category } },
         },
       });
@@ -164,6 +166,7 @@ router.post("/:id", async (req, res, next) => {
           numberOfModules: Number(data.fields.no_of_modules),
           duration: data.fields.duration,
           details: data.fields.details,
+          validity: data.fields.validity,
           status: JSON.parse(data.fields.status),
           category: { connect: { name: data.fields.category } },
         },
@@ -199,6 +202,7 @@ router.post("/:id", async (req, res, next) => {
           numberOfModules: Number(data.fields.no_of_modules),
           duration: data.fields.duration,
           details: data.fields.details,
+          validity: data.fields.validity,
           status: JSON.parse(data.fields.status),
           category: { connect: { name: data.fields.category } },
         },
