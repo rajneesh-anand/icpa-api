@@ -21,7 +21,7 @@ const readFile = async (file) => {
     console.error("Failed to read file", err);
   });
   const params = {
-    Bucket: bucketName + "/photos",
+    Bucket: bucketName + "/banner",
     Key: file.name,
     ContentType: file.type,
     Body: photo,
@@ -44,7 +44,7 @@ async function fetchObjects(bucketName) {
   const params = {
     Bucket: bucketName,
     // Delimiter: "/",
-    Prefix: "photos/",
+    Prefix: "banner/",
   };
 
   let listObject = s3.listObjectsV2(params).promise();
@@ -56,6 +56,7 @@ async function fetchObjects(bucketName) {
       url: `https://${bucketName}.s3.amazonaws.com/${content.Key}`,
     });
   });
+  console.log(objects);
   return objects;
 }
 
