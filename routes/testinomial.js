@@ -67,6 +67,7 @@ router.post("/", async (req, res, next) => {
           name: data.fields.name,
           company: data.fields.company,
           description: data.fields.content,
+          location: data.fields.location,
           image: imageLocation,
         },
       });
@@ -88,6 +89,7 @@ router.post("/", async (req, res, next) => {
           name: data.fields.name,
           company: data.fields.company,
           description: data.fields.content,
+          location: data.fields.location,
         },
       });
       res.status(200).json({
@@ -124,6 +126,7 @@ router.post("/:id", async (req, res, next) => {
           name: data.fields.name,
           company: data.fields.company,
           description: data.fields.content,
+          location: data.fields.location,
           image: imageLocation,
         },
       });
@@ -146,6 +149,7 @@ router.post("/:id", async (req, res, next) => {
           name: data.fields.name,
           company: data.fields.company,
           description: data.fields.content,
+          location: data.fields.location,
         },
       });
       res.status(200).json({

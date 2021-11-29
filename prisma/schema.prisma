@@ -172,6 +172,7 @@ model Testinomials{
   name      String? @unique
   company   String?
   description String?
+  location  String ?
   image    String?  
 }
 
