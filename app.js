@@ -21,10 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 var allowedDomains = [
-  "https://icpa-mu.vercel.app",
   "http://localhost:3000",
-  "https://admin.icpaglobalconsultant.com",
   "https://icpa-admin.vercel.app",
+  "https://admin.icpaglobalconsultant.com",
+  "https://icpa-mu.vercel.app",
+  "https://www.icpaglobalconsultant.com",
 ];
 app.use(
   cors({
