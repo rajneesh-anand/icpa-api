@@ -248,6 +248,8 @@ model Queries {
   contact String?
   location  String ?
   interested String ?
+  status String?  @default("Pending")  
+   createdAt      DateTime  @default(now()) @map(name: "created_at")
 }
 
 
