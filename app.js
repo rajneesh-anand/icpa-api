@@ -26,6 +26,7 @@ var allowedDomains = [
   "https://admin.icpaglobalconsultant.com",
   "https://icpa-mu.vercel.app",
   "https://icpaglobalconsultant.com",
+  "https://www.icpaglobalconsultant.com",
 ];
 app.use(
   cors({
