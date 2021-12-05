@@ -56,7 +56,7 @@ async function fetchObjects(bucketName) {
       url: `https://${bucketName}.s3.amazonaws.com/${content.Key}`,
     });
   });
-  console.log(objects);
+  // console.log(objects);
   return objects;
 }
 
@@ -114,7 +114,7 @@ router.post("/", async (req, res, next) => {
 router.get("/fetchObject", (req, res, next) => {
   fetchObjects(bucketName)
     .then((content) => {
-      console.log(content);
+      // console.log(content);
       res.status(200).json({ msg: "success", data: content });
     })
     .catch((err) => {
