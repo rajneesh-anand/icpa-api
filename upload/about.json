@@ -1,0 +1,45 @@
+[
+  {
+    "id": "about me",
+    "title": "Hello !",
+    "excerpt": "We are a fairly small, flexible design studio that designs for print and web. <br>KokeLiko works flexibly with clients to fulfil their design needs. Whether you need to create a brand from scratch, including marketing and a beautiful and functional website or whether you are looking for a great experience."
+  },
+  {
+    "id": "about service",
+    "title": "What We Do ? ",
+    "pagelinkText": [
+      { "text": "Amazon Seller Course", "link": "/courses/amazon" },
+      { "text": "Flipkart Seller Course", "link": "/courses/flipkart" },
+      { "text": "Online Seller Services", "link": "/services" },
+      { "text": "Youtube Free Course", "link": "/courses/youtube" },
+      { "text": "Blogs and News Updates", "link": "/blogs" },
+      { "text": "Telephonic Consultation", "link": "/telephonic-consultation" }
+    ]
+  },
+  {
+    "id": "team",
+    "title": "Meet Our Team",
+    "team": [
+      {
+        "id": 1,
+        "image": "/images/team/vinay.jpg",
+        "name": "Vinay Gupta",
+        "designation": "FOUNDER & DIRECTOR",
+        "facebook_handle": "https://facebook.com/",
+        "instagram_handle": "https://facebook.com/",
+        "twitter_handle": "https://facebook.com/",
+        "youtube_handle": "https://facebook.com/"
+      },
+      {
+        "id": 1,
+        "image": "/images/team/anurag.jpg",
+        "name": "Anurag Sharma",
+        "designation": "SALES & MARKETING",
+        "facebook_handle": "https://facebook.com/",
+        "instagram_handle": "https://facebook.com/",
+        "twitter_handle": "https://facebook.com/",
+        "youtube_handle": "https://facebook.com/"
+      }
+    ]
+  }
+]
