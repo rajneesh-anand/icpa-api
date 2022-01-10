@@ -194,4 +194,24 @@ router.post("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const product = await prisma.services.findMany({
+      take: 6,
+    });
+
+    res.status(200).json({
+      msg: "success",
+      data: product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  } finally {
+    async () => {
+      await prisma.$disconnect();
+    };
+  }
+});
+
 module.exports = router;

@@ -166,4 +166,28 @@ router.post("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const results = await prisma.testinomials.findMany({
+      take: 6,
+      orderBy: [
+        {
+          id: "asc",
+        },
+      ],
+    });
+
+    res.status(200).json({
+      data: results,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  } finally {
+    async () => {
+      await prisma.$disconnect();
+    };
+  }
+});
+
 module.exports = router;

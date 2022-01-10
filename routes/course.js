@@ -36,17 +36,17 @@ const readFile = async (file) => {
   }
 };
 
-const uploadPhototToawsS3 = async (data) => {
-  const images = data.files.images;
-  if (Array.isArray(images)) {
-    const promises = images.map((item) => readFile(item));
-    await Promise.all(promises);
-    return { message: "success" };
-  } else {
-    readFile(images);
-    return { message: "success" };
-  }
-};
+// const uploadPhototToawsS3 = async (data) => {
+//   const images = data.files.images;
+//   if (Array.isArray(images)) {
+//     const promises = images.map((item) => readFile(item));
+//     await Promise.all(promises);
+//     return { message: "success" };
+//   } else {
+//     readFile(images);
+//     return { message: "success" };
+//   }
+// };
 
 router.post("/", async (req, res, next) => {
   const data = await new Promise((resolve, reject) => {
@@ -221,4 +221,31 @@ router.post("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const courses = await prisma.courses.findMany({
+      take: 2,
+      where: {
+        status: true,
+      },
+      orderBy: [
+        {
+          id: "asc",
+        },
+      ],
+    });
+
+    res.status(200).json({
+      msg: "success",
+      data: courses,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  } finally {
+    async () => {
+      await prisma.$disconnect();
+    };
+  }
+});
 module.exports = router;
